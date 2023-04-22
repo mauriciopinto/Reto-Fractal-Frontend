@@ -70,11 +70,8 @@ const EditOrderView = (props) => {
                     selectedItems: [selectedItems, setSelectedItems]
                 }}
             >
-                <OrderEditForm mode={props.mode} />
+                <OrderEditForm mode={props.mode} submit={submitOrder} />
             </orderEditContext.Provider>
-            <Grid item xs={12}>
-                <Button variant="contained" onClick={submitOrder}>Submit Order</Button>
-            </Grid>
             <Grid item xs={12}>
                 <Alert severity='error' sx={{display: showNumberOfProductsError ? 'block' : 'none'}}>Number of products cannot be less than 1</Alert>
             </Grid>

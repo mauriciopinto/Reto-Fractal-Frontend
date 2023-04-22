@@ -18,6 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { orderEditContext } from '../views/EditOrder';
+import OptionalComponent from './wrappers/OptionalComponent';
 
 const AddProductModal = (props) => {
     const [selectedValue, setSelectedValue] = React.useState (1);
@@ -121,34 +122,41 @@ const OrderEditForm = (props) => {
     }
 
     return (
-        <Box
-            sx={{
-                height: '60vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                margin: 'auto'
-            }}
-        >
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Typography variant="h6">{props.mode === 'create' ? "New Order" : `Order # ${orderNumber}`}</Typography>
+        
+            <Box
+                sx={{
+                    height: '60vh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    margin: 'auto'
+                }}
+            >
+                <Grid container spacing={2}>
+                    <OptionalComponent show={productModalOpen}>
+                        <Grid item xs={12}>
+                            <Typography variant="h6">{props.mode === 'create' ? "New Order" : `Order # ${orderNumber}`}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField type="number" label="# of Products" value={orderNumberOfProducts} disabled sx={{width: '200px'}}/>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Button variant="contained" onClick={() => setProductModalOpen (true)}>Add Product</Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField type='date' label="date" value={orderDate} disabled sx={{width: '200px'}}/>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField type="number" label="finalPrice"  value={orderFinalPrice} disabled sx={{width: '200px'}}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button variant="contained" onClick={props.submit}>Submit Order</Button>
+                        </Grid>
+                    </OptionalComponent>
                 </Grid>
-                <Grid item xs={6}>
-                    <TextField type="number" label="# of Products" value={orderNumberOfProducts} disabled sx={{width: '200px'}}/>
-                </Grid>
-                <Grid item xs={6}>
-                    <Button variant="contained" onClick={() => setProductModalOpen (true)}>Add Product</Button>
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField type='date' label="date" value={orderDate} disabled sx={{width: '200px'}}/>
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField type="number" label="finalPrice"  value={orderFinalPrice} disabled sx={{width: '200px'}}/>
-                </Grid>
-            </Grid>
-            <AddProductModal open={productModalOpen} submit={addProduct} close={closeModal} items={allItems}/>
-        </Box>
+                <AddProductModal open={productModalOpen} submit={addProduct} close={closeModal} items={allItems}/>
+            </Box>
+        
     )
 }
 
