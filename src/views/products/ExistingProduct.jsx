@@ -1,13 +1,26 @@
 import React from 'react';
 
 import EditProductView from './EditProduct';
-import { useLoaderData } from 'react-router-dom';
+import PageLoader from '../PageLoader';
+
+import { useLoaderData, Await } from 'react-router-dom';
 
 const ExistingProductView = (props) => {
-    const productData = useLoaderData (). data;
+    const productData = useLoaderData ();
 
     return (
-        <EditProductView data={productData} title="Edit an existing Product" mode="edit"/>
+        <React.Suspense fallback={<PageLoader />}>
+            <Await
+                resolve={productData.productData}
+                errorElement={<p>Error loading product</p>}
+            >
+                {
+                    (productData) => (
+                        <EditProductView data={productData.data} title="Edit an existing Product" mode="edit"/>
+                    )
+                }
+            </Await>
+        </React.Suspense>
     )
 }
 

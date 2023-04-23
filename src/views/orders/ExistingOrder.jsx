@@ -1,13 +1,27 @@
 import React from 'react';
 
 import EditOrderView from './EditOrder';
-import { useLoaderData } from 'react-router-dom';
+import PageLoader from '../PageLoader';
+
+import { useLoaderData, Await } from 'react-router-dom';
 
 const ExistingOrderView = (props) => {
-    const orderData = useLoaderData (). data;
+    const orderData = useLoaderData ();
 
     return (
-        <EditOrderView data={orderData} title="Edit an existing Order" mode="edit"/>
+        <React.Suspense fallback={<PageLoader />}>
+            <Await
+                resolve={orderData.orderData}
+                errorElement={<p>Error loading order</p>}
+            >
+                {
+                    (orderData) => (
+                        <EditOrderView data={orderData.data} title="Edit an existing Order" mode="edit"/>
+                    )
+                }
+            </Await>
+        </React.Suspense>
+        
     )
 }
 
