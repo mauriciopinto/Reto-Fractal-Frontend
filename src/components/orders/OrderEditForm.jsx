@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Container from '@mui/material/Container';
 import Backdrop from '@mui/material/Backdrop';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -18,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { orderEditContext } from '../../views/orders/EditOrder';
 import OptionalComponent from '../wrappers/OptionalComponent';
+import { ResponsiveContainer } from '../Container';
 
 const AddProductModal = (props) => {
     const [selectedValue, setSelectedValue] = React.useState (1);
@@ -40,10 +40,9 @@ const AddProductModal = (props) => {
 
     return (
         <Backdrop open={props.open}>
-            <Container sx={{
+            <ResponsiveContainer sx={{
                 background: 'white',
                 borderRadius: '3px',
-                width: '60vw',
                 minHeight: '40vh',
                 padding: '1em',
                 display: 'flex',
@@ -94,7 +93,7 @@ const AddProductModal = (props) => {
                         <Alert severity='error' sx={{display: showAmountError ? 'block' : 'none'}}>{amountErrorText}</Alert>
                     </Grid>
                 </Grid>
-            </Container>
+            </ResponsiveContainer>
         </Backdrop>
     )
 }
