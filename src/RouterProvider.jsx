@@ -55,7 +55,7 @@ const ViewProvider = (props) => {
                 element={<NewProductView />}
             />
             <Route 
-                path="/add-order/:id"
+                path="/add-product/:id"
                 element={<ExistingProductView />}
                 loader={({params}) => getProductById (params.id)}
             />
