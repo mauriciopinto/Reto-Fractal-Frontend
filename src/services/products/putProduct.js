@@ -10,7 +10,7 @@ const config = {
 };
 
 function updateProductById (productId, productData) {
-    const url = `${process.env.REACT_APP_BACKEND_URL}/orders/${productId}`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/products/${productId}`;
 
     return axios.put (url, productData, config);
 }
@@ -21,10 +21,15 @@ function updateProductStock (productData) {
     getProductById (productId)
     .then ((res) => {
         const newProduct = {
-            
+            name: res.data.name,
+            unitPrice: res.data.unitPrice,
+            stock: res.data.stock - parseInt (productAmount),
+            totalPrice: res.data.totalPrice
         };
 
-        updateProductById ();
+        updateProductById (productId, newProduct)
+        .then ((res) => console.log (res))
+        .catch ((err) => console.log (err));
     })
     .catch ((err) => console.log (err));
 }

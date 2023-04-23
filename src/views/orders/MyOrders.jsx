@@ -37,7 +37,7 @@ const MyOrdersView = (props) => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '80vh'
+                minHeight: '80vh'
             }}
         >
             <Grid container spacing={2} alignItems="center" justifyContent="center">

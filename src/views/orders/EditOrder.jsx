@@ -9,6 +9,7 @@ import OrderEditForm from '../../components/orders/OrderEditForm';
 import { updateProductStock } from '../../services/products/putProduct';
 import { getAllProducts } from '../../services/products/getProduct';
 import { postOrder } from '../../services/orders/postOrder';
+import { updateOrderById } from '../../services/orders/putOrder';
 
 export const orderEditContext = React.createContext ();
 
@@ -31,6 +32,10 @@ const EditOrderView = (props) => {
         .catch ((err) => console.log (err));
     }, [])
 
+    function sendRequest (params) {
+        return props.mode === "create" ? postOrder (params.orderData) : updateOrderById (params.id, params.orderData);
+    }
+
     function submitOrder () {
         if (orderNumberOfProducts < 1) {
             setShowNumberOfProductsError (true);
@@ -44,7 +49,7 @@ const EditOrderView = (props) => {
                 finalPrice: orderFinalPrice
             };
 
-            postOrder (orderData)
+            sendRequest ({id: props.data.id, orderData: orderData})
             .then ((res) => {
                 if (res.status === 200) {
                     selectedItems.forEach ((item) => {

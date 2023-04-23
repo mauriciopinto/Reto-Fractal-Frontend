@@ -6,6 +6,7 @@ import Alert from '@mui/material/Alert';
 
 import ProductEditForm from '../../components/products/ProductEditForm';
 import { postProduct } from '../../services/products/postProduct';
+import { updateProductById } from '../../services/products/putProduct';
 
 export const productEditContext = React.createContext ();
 
@@ -16,6 +17,10 @@ const EditProductView = (props) => {
     const [productTotalPrice, setProductTotalPrice] = React.useState (props.data.totalPrice);
 
     const [showStockError, setShowStockError] = React.useState (false);
+
+    function sendRequest (params) {
+        return props.mode === "create" ? postProduct (params.productData) : updateProductById (params.id, params.productData);
+    }
 
     function submitProduct () {
         console.log (productUnitPrice)
@@ -31,7 +36,7 @@ const EditProductView = (props) => {
                 totalPrice: productTotalPrice
             };
 
-            postProduct (productData)
+            sendRequest ({id: props.data.id, productData: productData})
             .then ((res) => {
                 if (res.status === 200) {
                     alert ('Product saved successfully!');

@@ -24,7 +24,7 @@ const MyProductsView = (props) => {
         .then ((res) => {
             if (res.status === 200) {
                 alert ('Product deleted successfully!');
-                window.location.href = '/';
+                window.location.href = '/my-products';
             }
         })
         .catch ((err) => console.log (err));
@@ -38,7 +38,7 @@ const MyProductsView = (props) => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '80vh'
+                minHeight: '80vh'
             }}
         >
             <Grid container spacing={2} alignItems="center" justifyContent="center">
