@@ -105,7 +105,7 @@ const ProductTable = (props) => {
                 </TableHead>
                 <TableBody>
                     {
-                        props.orders.map ((product, idx) => {
+                        props.orders.data.map ((product, idx) => {
                             return (
                                 <TableRow key={idx}>
                                     <TableCell>{product.id}</TableCell>

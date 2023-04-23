@@ -141,7 +141,6 @@ const OrderEditForm = (props) => {
         closeModal ();
     }
 
-    console.log (selectedItems);
     return (
         
             <Box

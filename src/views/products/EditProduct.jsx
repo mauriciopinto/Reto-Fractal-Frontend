@@ -23,7 +23,6 @@ const EditProductView = (props) => {
     }
 
     function submitProduct () {
-        console.log (productUnitPrice)
         if (productStock < 1) {
             setShowStockError (true);
         } else {

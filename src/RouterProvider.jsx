@@ -16,7 +16,8 @@ import {
     Route,
     RouterProvider,
     createRoutesFromElements,
-    createBrowserRouter
+    createBrowserRouter, 
+    defer
 } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
@@ -29,12 +30,22 @@ const ViewProvider = (props) => {
             <Route
                 path="/"
                 element={<MyOrdersView />}
-                loader={getAllOrders}
+                loader={async () => {
+                    const orders = getAllOrders ();
+                    return defer ({
+                        orders: orders
+                    });
+                }}
             />
             <Route
                 path="/my-orders"
                 element={<MyOrdersView />}
-                loader={getAllOrders}
+                loader={async () => {
+                    const orders = getAllOrders ();
+                    return defer ({
+                        orders: orders
+                    });
+                }}
             />
             <Route
                 path="/add-order"
@@ -43,12 +54,22 @@ const ViewProvider = (props) => {
             <Route
                 path="/add-order/:id"
                 element={<ExistingOrderView />}
-                loader={({params}) => getOrderById (params.id)}
+                loader={async ({params}) => {
+                    const order = getOrderById (params.id);
+                    return defer ({
+                        orderData: order
+                    })
+                }}
             />
             <Route
                 path="/my-products"
                 element={<MyProductsView />}
-                loader={getAllProducts}
+                loader={async () => {
+                    const products = getAllProducts ();
+                    return defer ({
+                        products: products
+                    });
+                }}
             />
             <Route
                 path="/add-product"
@@ -57,7 +78,12 @@ const ViewProvider = (props) => {
             <Route 
                 path="/add-product/:id"
                 element={<ExistingProductView />}
-                loader={({params}) => getProductById (params.id)}
+                loader={async ({params}) => {
+                    const product = getProductById (params.id);
+                    return defer ({
+                        productData: product
+                    })
+                }}
             />
         </>
     );
