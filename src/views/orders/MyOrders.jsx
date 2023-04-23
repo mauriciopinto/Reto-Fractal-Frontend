@@ -5,11 +5,11 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
-import OrderTable from "../components/OrderTable";
+import OrderTable from "../../components/orders/OrderTable";
 
 import { useLoaderData } from "react-router-dom";
 
-import { deleteOrderById } from "../services/orders/deleteOrder";
+import { deleteOrderById } from "../../services/orders/deleteOrder";
 
 export const deleteContext = React.createContext ();
 

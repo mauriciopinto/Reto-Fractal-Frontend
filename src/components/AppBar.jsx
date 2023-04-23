@@ -9,7 +9,8 @@ const MainAppBar = (props) => {
         <>
             <AppBar>
                 <Toolbar>
-                    <Button  onClick={() => window.location.href='/'} sx={{color: 'white'}}>My Orders</Button>
+                    <Button  onClick={() => window.location.href='/my-orders'} sx={{color: 'white'}}>My Orders</Button>
+                    <Button  onClick={() => window.location.href='/my-products'} sx={{color: 'white'}}>My Products</Button>
                 </Toolbar>
             </AppBar>
             <Toolbar />

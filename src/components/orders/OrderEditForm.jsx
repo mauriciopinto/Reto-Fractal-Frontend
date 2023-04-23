@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
@@ -17,16 +16,19 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { orderEditContext } from '../views/EditOrder';
-import OptionalComponent from './wrappers/OptionalComponent';
+import { orderEditContext } from '../../views/orders/EditOrder';
+import OptionalComponent from '../wrappers/OptionalComponent';
 
 const AddProductModal = (props) => {
     const [selectedValue, setSelectedValue] = React.useState (1);
     const [amount, setAmount] = React.useState (1);
     const [showAmountError, setShowAmountError] = React.useState (false);
+    const [amountErrorText, setAmountErrorText] = React.useState ('');
 
     function submitProduct () {
-        if (amount < 1) {
+        const stock = props.items.filter ((item) => item.id === selectedValue)[0].stock;
+        if (amount < 1 || amount > stock) {
+            setAmountErrorText (amount > stock ? "Amount can't be higher than stock" : "Amount can't be less than 1");
             setShowAmountError (true);
         } else {
             setShowAmountError (false);
@@ -35,7 +37,6 @@ const AddProductModal = (props) => {
             props.submit (selectedValue, amount, totalPrice);
         }
     }
-
 
     return (
         <Backdrop open={props.open}>
@@ -69,22 +70,28 @@ const AddProductModal = (props) => {
                             <Stack direction="row" spacing={3}>
                                 <Select
                                     value={selectedValue}
+                                    onChange={(e) => setSelectedValue (e.target.value)}
                                 >
                                     {
                                         props.items.map ((product, idx) => {
                                             return (
-                                                <MenuItem key={idx} value={product.id} onChange={(e) => setSelectedValue (e.target.value)}>{product.name}</MenuItem>
+                                                <MenuItem key={idx} value={product.id} onSelect={(e) => setSelectedValue (product.id)}>{product.name}</MenuItem>
                                             )
                                         })
                                     }
                                 </Select>
                                 <TextField type="number" label="Amount" value={amount} onChange={(e) => setAmount (e.target.value)}/>
+                                <Box>
+                                    <Typography variant="caption">${props.items.length > 0 ? (props.items.filter ((item) => item.id === selectedValue)[0].unitPrice * amount).toFixed (2) : ''}</Typography>
+                                    <br/>
+                                    <Typography variant="caption">Stock: {props.items.length > 0 ? props.items.filter ((item) => item.id === selectedValue)[0].stock : ''}</Typography>
+                                </Box>
                                 <Button variant="contained" onClick={submitProduct}>Add</Button>
                             </Stack>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
-                        <Alert severity='error' sx={{display: showAmountError ? 'block' : 'none'}}>Amount can't be less than 1</Alert>
+                        <Alert severity='error' sx={{display: showAmountError ? 'block' : 'none'}}>{amountErrorText}</Alert>
                     </Grid>
                 </Grid>
             </Container>
@@ -108,19 +115,33 @@ const OrderEditForm = (props) => {
     }
 
     function addProduct (productId, amount, totalPrice) {
-        setOrderNumberOfProducts (orderNumberOfProducts + amount);
+        setOrderNumberOfProducts (orderNumberOfProducts + parseInt (amount));
         setOrderFinalPrice (orderFinalPrice + totalPrice);
-        setSelectedItems([
-            {
-                id: productId,
-                totalPrice: totalPrice
-            },
-            ...selectedItems
-    ])
+
+        /* Decrease the stock of added items in this order's context */
+        let [item] = allItems.filter ((item) => item.id === productId);
+        item.stock -= amount;
+
+        /* If item is already in order, accumulate */
+        if (selectedItems.length > 0 && selectedItems.filter ((item) => item.id === productId).length > 0) {
+            let [existingItem] = selectedItems.filter ((item) => item.id === productId);
+            existingItem.amount += parseInt (amount);
+            existingItem.totalPrice += totalPrice;
+        } else {
+            setSelectedItems([
+                {
+                    id: productId,
+                    amount: parseInt (amount),
+                    totalPrice: totalPrice
+                },
+                ...selectedItems
+            ]);
+        }
 
         closeModal ();
     }
 
+    console.log (selectedItems);
     return (
         
             <Box
@@ -147,7 +168,7 @@ const OrderEditForm = (props) => {
                             <TextField type='date' label="date" value={orderDate} disabled sx={{width: '200px'}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField type="number" label="finalPrice"  value={orderFinalPrice} disabled sx={{width: '200px'}}/>
+                            <TextField type="number" label="finalPrice ($)"  value={`${orderFinalPrice.toFixed (2)}`} disabled sx={{width: '200px'}}/>
                         </Grid>
                         <Grid item xs={12}>
                             <Button variant="contained" onClick={props.submit}>Submit Order</Button>

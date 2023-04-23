@@ -2,13 +2,13 @@ import React from 'react';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 
-import OrderEditForm from '../components/OrderEditForm';
+import OrderEditForm from '../../components/orders/OrderEditForm';
 
-import { getAllProducts } from '../services/products/getProduct';
-import { postOrder } from '../services/orders/postOrder';
+import { updateProductStock } from '../../services/products/putProduct';
+import { getAllProducts } from '../../services/products/getProduct';
+import { postOrder } from '../../services/orders/postOrder';
 
 export const orderEditContext = React.createContext ();
 
@@ -47,6 +47,9 @@ const EditOrderView = (props) => {
             postOrder (orderData)
             .then ((res) => {
                 if (res.status === 200) {
+                    selectedItems.forEach ((item) => {
+                        updateProductStock (item);
+                    });
                     alert ('Order saved successfully!');
                     window.location.href = '/'
                 }
