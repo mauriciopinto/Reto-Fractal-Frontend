@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const PageLoader = (props) => {
     return (
         <Backdrop 
-            open={true}
+            open={props.open}
         >
             <CircularProgress />
         </Backdrop>

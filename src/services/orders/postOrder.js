@@ -20,7 +20,8 @@ async function postOrder (orderData) {
                 orderNumber: res.data.id,
                 date: res.data.date,
                 numberOfProducts: res.data.numberOfProducts,
-                finalPrice: res.data.finalPrice
+                finalPrice: res.data.finalPrice,
+                status: res.data.status
         })
     }
 

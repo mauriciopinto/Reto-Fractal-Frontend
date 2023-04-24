@@ -9,7 +9,8 @@ const NewOrderView = (props) => {
         orderNumber: 1,
         date: dayjs ().format ("YYYY-MM-DD"),
         numberOfProducts: 0,
-        finalPrice: 0.0
+        finalPrice: 0.0,
+        status: 'PENDING'
     };
 
     return (

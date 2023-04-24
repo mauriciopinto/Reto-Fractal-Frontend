@@ -7,6 +7,7 @@ import Alert from '@mui/material/Alert';
 import ProductEditForm from '../../components/products/ProductEditForm';
 import { postProduct } from '../../services/products/postProduct';
 import { updateProductById } from '../../services/products/putProduct';
+import PageLoader from '../PageLoader';
 
 export const productEditContext = React.createContext ();
 
@@ -17,6 +18,7 @@ const EditProductView = (props) => {
     const [productTotalPrice, setProductTotalPrice] = React.useState (props.data.totalPrice);
 
     const [showStockError, setShowStockError] = React.useState (false);
+    const [loading, setLoading] = React.useState (false);
 
     function sendRequest (params) {
         return props.mode === "create" ? postProduct (params.productData) : updateProductById (params.id, params.productData);
@@ -34,10 +36,12 @@ const EditProductView = (props) => {
                 stock: productStock,
                 totalPrice: productTotalPrice
             };
-
+            
+            setLoading (true);
             sendRequest ({id: props.data.id, productData: productData})
             .then ((res) => {
                 if (res.status === 200) {
+                    setLoading (false);
                     alert ('Product saved successfully!');
                     window.location.href = '/my-products'
                 }
@@ -64,6 +68,7 @@ const EditProductView = (props) => {
             <Grid item xs={12}>
                 <Alert severity='error' sx={{display: showStockError ? 'block' : 'none'}}>Product stock cannot be less than 1</Alert>
             </Grid>
+            <PageLoader open={loading} />
         </Grid>
     )
 }

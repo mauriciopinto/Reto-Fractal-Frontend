@@ -33,7 +33,7 @@ const MyProductsView = (props) => {
     }
 
     return (
-        <React.Suspense fallback={<PageLoader />}>
+        <React.Suspense fallback={<PageLoader open={true} />}>
             <Await
                 resolve={loadedData.products}
                 errorElement={

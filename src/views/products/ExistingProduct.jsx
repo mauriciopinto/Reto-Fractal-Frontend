@@ -9,7 +9,7 @@ const ExistingProductView = (props) => {
     const productData = useLoaderData ();
 
     return (
-        <React.Suspense fallback={<PageLoader />}>
+        <React.Suspense fallback={<PageLoader open={true} />}>
             <Await
                 resolve={productData.productData}
                 errorElement={<p>Error loading product</p>}

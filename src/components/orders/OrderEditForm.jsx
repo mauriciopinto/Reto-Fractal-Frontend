@@ -106,6 +106,7 @@ const OrderEditForm = (props) => {
     const [orderDate, setOrderDate] = orderData.orderDate;
     const [orderNumberOfProducts, setOrderNumberOfProducts] = orderData.orderNumberOfProducts;
     const [orderFinalPrice, setOrderFinalPrice] = orderData.orderFinalPrice;
+    const [orderStatus, setOrderStatus] = orderData.orderStatus;
     const [allItems, setAllItems] = orderData.allItems;
     const [selectedItems, setSelectedItems] = orderData.selectedItems;
 
@@ -163,10 +164,13 @@ const OrderEditForm = (props) => {
                             <Button variant="contained" onClick={() => setProductModalOpen (true)}>Add Product</Button>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField type='date' label="date" value={orderDate} disabled sx={{width: '200px'}}/>
+                            <TextField type='date' label="Date" value={orderDate} disabled sx={{width: '200px'}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField type="number" label="finalPrice ($)"  value={`${orderFinalPrice.toFixed (2)}`} disabled sx={{width: '200px'}}/>
+                            <TextField type="number" label="Final price ($)"  value={`${orderFinalPrice.toFixed (2)}`} disabled sx={{width: '200px'}}/>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField type="text" label="Status" value={orderStatus} disabled sx={{width: '200px'}} />
                         </Grid>
                         <Grid item xs={12}>
                             <Button variant="contained" onClick={props.submit}>Submit Order</Button>

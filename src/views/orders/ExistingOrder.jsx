@@ -9,7 +9,7 @@ const ExistingOrderView = (props) => {
     const orderData = useLoaderData ();
 
     return (
-        <React.Suspense fallback={<PageLoader />}>
+        <React.Suspense fallback={<PageLoader open={true} />}>
             <Await
                 resolve={orderData.orderData}
                 errorElement={<p>Error loading order</p>}

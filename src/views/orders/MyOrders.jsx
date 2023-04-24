@@ -19,11 +19,14 @@ const MyOrdersView = (props) => {
 
     const [selectedForDelete, setSelectedForDelete] = React.useState (null);
     const [showDeleteModal, setShowDeleteModal] = React.useState (false);
+    const [loading, setLoading] = React.useState (false);
 
     function deleteOrder () {
+        setLoading (true);
         deleteOrderById (selectedForDelete)
         .then ((res) => {
             if (res.status === 200) {
+                setLoading (false);
                 alert ('Order deleted successfully!');
                 window.location.href = '/';
             }
@@ -33,7 +36,7 @@ const MyOrdersView = (props) => {
     }
 
     return (
-        <React.Suspense fallback={<PageLoader />}>
+        <React.Suspense fallback={<PageLoader open={true} />}>
             <Await
                 resolve={loadedData.orders}
                 errorElement={
@@ -78,8 +81,8 @@ const MyOrdersView = (props) => {
                         </Box>
                     )
                 }
-                
             </Await>
+            <PageLoader open={loading} />
         </React.Suspense>
     )
 }
